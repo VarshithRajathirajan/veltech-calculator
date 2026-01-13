@@ -7,36 +7,34 @@
 <style>
 :root{
     --bg:#f1f5f9;
+    --blue:#2563eb;
+    --indigo:#4f46e5;
+    --orange:#f59e0b;
+    --green:#16a34a;
+    --gray:#64748b;
     --danger:#dc2626;
-    --warning:#f59e0b;
-    --success:#16a34a;
 }
-
 *{box-sizing:border-box}
-
 body{
     margin:0;
     font-family:Segoe UI,system-ui,sans-serif;
     background:var(--bg);
     padding:30px;
 }
-
 h1{text-align:center;margin-bottom:20px}
-
 .card{
+    background:white;
     padding:20px;
     border-radius:14px;
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
     margin-bottom:20px;
-    background:white;
     border-left:8px solid;
 }
-
-.profile{border-color:#64748b}
-.gpa{border-color:#2563eb}
-.cgpa{border-color:#4f46e5}
-.attendance{border-color:#f59e0b}
-.internal{border-color:#16a34a}
+.profile{border-color:var(--gray)}
+.gpa{border-color:var(--blue)}
+.cgpa{border-color:var(--indigo)}
+.attendance{border-color:var(--orange)}
+.internal{border-color:var(--green)}
 
 .hidden{display:none}
 
@@ -47,7 +45,6 @@ h1{text-align:center;margin-bottom:20px}
     flex-wrap:wrap;
     margin-bottom:20px;
 }
-
 .menu button{
     padding:10px 18px;
     border:none;
@@ -56,30 +53,14 @@ h1{text-align:center;margin-bottom:20px}
     font-weight:600;
     cursor:pointer;
 }
-
 .menu button.active{
-    background:#2563eb;
-    color:#fff;
+    background:var(--blue);
+    color:white;
 }
+.section{display:none;max-width:950px;margin:auto}
 
-.section{
-    display:none;
-    max-width:950px;
-    margin:auto;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:10px;
-}
-
-th,td{
-    padding:10px;
-    text-align:center;
-    border-bottom:1px solid #ddd;
-}
-
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{padding:10px;text-align:center;border-bottom:1px solid #ddd}
 th{background:#eff6ff}
 
 input,select{
@@ -94,14 +75,12 @@ input,select{
     padding:10px 16px;
     border:none;
     border-radius:8px;
-    background:#2563eb;
-    color:#fff;
+    background:var(--blue);
+    color:white;
     font-weight:600;
     cursor:pointer;
 }
-
-.btn.secondary{background:#64748b}
-.btn.success{background:#16a34a}
+.btn.secondary{background:var(--gray)}
 
 .result{
     margin-top:15px;
@@ -110,8 +89,7 @@ input,select{
     border-radius:8px;
     font-weight:bold;
 }
-
-.warning{
+.msg{
     margin-top:10px;
     padding:10px;
     border-radius:8px;
@@ -125,15 +103,9 @@ input,select{
     overflow:hidden;
     margin-top:8px;
 }
-
 .progress div{height:100%}
 
-footer{
-    text-align:center;
-    margin-top:40px;
-    font-size:14px;
-    color:#555;
-}
+footer{text-align:center;margin-top:40px;font-size:14px;color:#555}
 </style>
 </head>
 
@@ -148,134 +120,246 @@ footer{
 <input id="regno" placeholder="Register Number"><br><br>
 <input id="dept" placeholder="Department"><br><br>
 <input id="sem" placeholder="Semester">
-<button class="btn" onclick="proceed()">Proceed to Calculators</button>
-<div id="profileError" class="warning hidden" style="background:var(--danger)">
-Please fill all profile details
+<button class="btn" onclick="proceed()">Proceed</button>
+<div id="profileError" class="msg hidden" style="background:var(--danger)">
+Fill all profile details
 </div>
 </div>
 
-<!-- CALCULATORS -->
 <div id="calculatorArea" class="hidden">
 
 <div class="card profile">
 <h2 id="helloText"></h2>
 <p>Welcome to Vel Tech Calculator</p>
 <strong id="profileSummary"></strong><br>
-<button class="btn secondary" onclick="editProfile()">✏ Edit Profile</button>
+<button class="btn secondary" onclick="editProfile()">Edit Profile</button>
 </div>
 
 <div class="menu">
-    <button onclick="showSection('internal',this)">Internal</button>
+<button onclick="show('gpa',this)">GPA</button>
+<button onclick="show('cgpa',this)">CGPA</button>
+<button onclick="show('attendance',this)">Attendance</button>
+<button onclick="show('internal',this)">Internal</button>
+</div>
+
+<!-- GPA -->
+<div id="gpa" class="section card gpa">
+<h2>GPA Calculator</h2>
+<table id="gpaTable">
+<tr><th>Course</th><th>Credits</th><th>Grade</th></tr>
+<tr>
+<td><input></td>
+<td><input type="number" class="credit"></td>
+<td>
+<select class="grade">
+<option value="">Select</option>
+<option value="10">S</option>
+<option value="9">A</option>
+<option value="8">B</option>
+<option value="7">C</option>
+<option value="6">D</option>
+<option value="0">RA</option>
+</select>
+</td>
+</tr>
+</table>
+<button class="btn" onclick="addGPARow()">Add Course</button>
+<button class="btn" onclick="calcGPA()">Calculate GPA</button>
+<div class="result" id="gpaResult"></div>
+<div id="gpaMsg" class="msg hidden"></div>
+</div>
+
+<!-- CGPA (MANUAL) -->
+<div id="cgpa" class="section card cgpa">
+<h2>CGPA Calculator (Manual Entry)</h2>
+<table id="cgpaTable">
+<tr><th>Semester</th><th>Credits Earned</th><th>GPA Obtained</th></tr>
+<tr>
+<td><input placeholder="Sem 1"></td>
+<td><input type="number" class="semCredit"></td>
+<td><input type="number" step="0.01" class="semGPA"></td>
+</tr>
+</table>
+<button class="btn" onclick="addCGPARow()">Add Semester</button>
+<button class="btn" onclick="calcCGPA()">Calculate CGPA</button>
+<div class="result" id="cgpaResult"></div>
+<div id="cgpaMsg" class="msg hidden"></div>
+</div>
+
+<!-- ATTENDANCE -->
+<div id="attendance" class="section card attendance">
+<h2>Attendance</h2>
+<input id="total" placeholder="Total Classes">
+<input id="attended" placeholder="Attended Classes">
+<button class="btn" onclick="calcAttendance()">Calculate</button>
+<div class="result" id="attResult"></div>
+<div class="progress"><div id="attBar"></div></div>
+<div id="attMsg" class="msg hidden"></div>
+<div class="result" id="attRecover"></div>
 </div>
 
 <!-- INTERNAL -->
 <div id="internal" class="section card internal">
-<h2>Internal Marks Calculator</h2>
-
-<select id="subjectType" onchange="toggleInternalType()">
+<h2>Internal Marks</h2>
+<select id="stype" onchange="toggleInternal()">
 <option value="">Select Subject Type</option>
 <option value="theory">Theory</option>
 <option value="integrated">Integrated</option>
 </select>
 
-<div id="theoryBlock" class="hidden">
-<br>
+<div id="theory" class="hidden">
 <input id="t1" placeholder="Test 1">
 <input id="t2" placeholder="Test 2">
 <input id="t3" placeholder="Test 3">
-<input id="tAttend" placeholder="Attendance (out of 5)">
-<input id="tAssign" placeholder="Assignment (out of 5)">
+<input id="ta" placeholder="Attendance (5)">
+<input id="ts" placeholder="Assignment (5)">
 </div>
 
-<div id="integratedBlock" class="hidden">
-<br>
-<input id="i1" placeholder="Test 1 (out of 20)">
-<input id="i2" placeholder="Test 2 (out of 20)">
-<input id="lab" placeholder="Lab Mark (out of 20)">
-<input id="iAttend" placeholder="Attendance (out of 5)">
-<input id="iAssign" placeholder="Assignment (out of 5)">
+<div id="integrated" class="hidden">
+<input id="i1" placeholder="Test 1 (20)">
+<input id="i2" placeholder="Test 2 (20)">
+<input id="lab" placeholder="Lab (20)">
+<input id="ia" placeholder="Attendance (5)">
+<input id="is" placeholder="Assignment (5)">
 </div>
 
-<button class="btn" onclick="calculateInternal()">Calculate Internal</button>
-
-<div class="result" id="internalResult"></div>
-<div id="internalMessage" class="warning hidden"></div>
-
-<button class="btn" onclick="download()">Download</button>
+<button class="btn" onclick="calcInternal()">Calculate</button>
+<div class="result" id="intResult"></div>
+<div id="intMsg" class="msg hidden"></div>
 </div>
 
 </div>
 
-<footer><b> Created By Varshith G S (VTU27888) || All rights reserved</b></footer>
+  <footer><b> Created By Varshith G S (VTU27888) || © All Rights Reserved</b></footer>
 
 <script>
 function proceed(){
-    if(!sname.value||!regno.value||!dept.value||!sem.value){
-        profileError.classList.remove("hidden");return;
-    }
-    profileCard.classList.add("hidden");
-    calculatorArea.classList.remove("hidden");
-    helloText.innerText="Hello, "+sname.value;
-    profileSummary.innerText=
-        `${sname.value} | ${regno.value} | ${dept.value} | Semester ${sem.value}`;
+ if(!sname.value||!regno.value||!dept.value||!sem.value){
+  profileError.classList.remove("hidden");return;
+ }
+ profileCard.classList.add("hidden");
+ calculatorArea.classList.remove("hidden");
+ helloText.innerText="Hello, "+sname.value;
+ profileSummary.innerText=`${sname.value} | ${regno.value} | ${dept.value} | Sem ${sem.value}`;
 }
-
 function editProfile(){
-    calculatorArea.classList.add("hidden");
-    profileCard.classList.remove("hidden");
+ calculatorArea.classList.add("hidden");
+ profileCard.classList.remove("hidden");
 }
-
-function showSection(id,btn){
-    document.querySelectorAll('.section').forEach(s=>s.style.display='none');
-    document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
-    document.getElementById(id).style.display='block';
-    btn.classList.add('active');
+function show(id,btn){
+ document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+ document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+ document.getElementById(id).style.display='block';
+ btn.classList.add('active');
 }
-
-function toggleInternalType(){
-    theoryBlock.classList.add("hidden");
-    integratedBlock.classList.add("hidden");
-    if(subjectType.value==="theory") theoryBlock.classList.remove("hidden");
-    if(subjectType.value==="integrated") integratedBlock.classList.remove("hidden");
+function addGPARow(){
+ gpaTable.insertRow().innerHTML=`
+ <td><input></td>
+ <td><input type="number" class="credit"></td>
+ <td>
+ <select class="grade">
+ <option value="">Select</option>
+ <option value="10">S</option>
+ <option value="9">A</option>
+ <option value="8">B</option>
+ <option value="7">C</option>
+ <option value="6">D</option>
+ <option value="0">RA</option>
+ </select></td>`;
 }
-
-function calculateInternal(){
-    let internal=0;
-
-    if(subjectType.value==="theory"){
-        internal=(+t1.value+ +t2.value+ +t3.value)/3
-                 + +tAttend.value + +tAssign.value;
-    }
-
-    if(subjectType.value==="integrated"){
-        internal=(+i1.value+ +i2.value)/2
-                 + +lab.value + +iAttend.value + +iAssign.value;
-    }
-
-    internal=Number(internal.toFixed(2));
-    internalResult.innerText="Internal Marks: "+internal;
-
-    internalMessage.classList.remove("hidden");
-
-    if(internal < 23){
-        let required=(23-internal)+27;
-        internalMessage.style.background="var(--danger)";
-        internalMessage.innerText=
-            `⚠ Very low internal! You must score at least ${required.toFixed(2)} / 50 in End Semester Exam to pass.`;
-    }
-    else if(internal > 35){
-        internalMessage.style.background="var(--success)";
-        internalMessage.innerText=
-            "🎉 Excellent internal marks! You are in a safe zone.";
-    }
-    else{
-        internalMessage.style.background="var(--warning)";
-        internalMessage.innerText=
-            "⚠ Internal is average. Aim higher in End Semester Exam.";
-    }
+function calcGPA(){
+ let tc=0,tp=0,ra=0;
+ document.querySelectorAll('.credit').forEach((c,i)=>{
+  let g=document.querySelectorAll('.grade')[i].value;
+  if(c.value&&g){tc+=+c.value;tp+=c.value*g;if(g==0)ra++;}
+ });
+ let gpa=(tp/tc).toFixed(2);
+ gpaResult.innerText="GPA: "+gpa;
+ gpaMsg.classList.remove("hidden");
+ if(gpa<6||ra>0){
+  gpaMsg.style.background="var(--danger)";
+  gpaMsg.innerText="Poor GPA / RA detected.";
+ }else if(gpa<7.5){
+  gpaMsg.style.background="var(--orange)";
+  gpaMsg.innerText="Average GPA.";
+ }else{
+  gpaMsg.style.background="var(--green)";
+  gpaMsg.innerText="Good GPA.";
+ }
 }
-
-function download(){ window.print(); }
+function addCGPARow(){
+ cgpaTable.insertRow().innerHTML=`
+ <td><input placeholder="Sem"></td>
+ <td><input type="number" class="semCredit"></td>
+ <td><input type="number" step="0.01" class="semGPA"></td>`;
+}
+function calcCGPA(){
+ let tc=0,sum=0;
+ document.querySelectorAll('.semCredit').forEach((c,i)=>{
+  let g=document.querySelectorAll('.semGPA')[i].value;
+  if(c.value&&g){tc+=+c.value;sum+=c.value*g;}
+ });
+ let cgpa=(sum/tc).toFixed(2);
+ cgpaResult.innerText="CGPA: "+cgpa;
+ cgpaMsg.classList.remove("hidden");
+ if(cgpa<6){
+  cgpaMsg.style.background="var(--danger)";
+  cgpaMsg.innerText="At risk. Not placement eligible.";
+ }else if(cgpa<7){
+  cgpaMsg.style.background="var(--orange)";
+  cgpaMsg.innerText="Weak standing.";
+ }else{
+  cgpaMsg.style.background="var(--green)";
+  cgpaMsg.innerText="Good standing.";
+ }
+}
+function calcAttendance(){
+ let t=+total.value,a=+attended.value;
+ let p=(a/t)*100;
+ attResult.innerText="Attendance: "+p.toFixed(2)+"%";
+ let color=p>=80?"var(--green)":p>=75?"var(--orange)":"var(--danger)";
+ attBar.style.width=p+"%";attBar.style.background=color;
+ attMsg.classList.remove("hidden");
+ if(p<75){
+  attMsg.style.background="var(--danger)";
+  attMsg.innerText="Below 75%. Exam debar risk.";
+ }else{
+  attMsg.style.background="var(--green)";
+  attMsg.innerText="Attendance acceptable.";
+ }
+ attRecover.innerText=
+  `Classes needed → 75%: ${Math.ceil((0.75*t-a)/(1-0.75))},
+   80%: ${Math.ceil((0.8*t-a)/(1-0.8))},
+   90%: ${Math.ceil((0.9*t-a)/(1-0.9))}`;
+}
+function toggleInternal(){
+ theory.classList.add("hidden");
+ integrated.classList.add("hidden");
+ if(stype.value==="theory")theory.classList.remove("hidden");
+ if(stype.value==="integrated")integrated.classList.remove("hidden");
+}
+function calcInternal(){
+ let internal=0;
+ if(stype.value==="theory"){
+  internal=(+t1.value+ +t2.value+ +t3.value)/3 + +ta.value + +ts.value;
+ }
+ if(stype.value==="integrated"){
+  internal=(+i1.value+ +i2.value)/2 + +lab.value + +ia.value + +is.value;
+ }
+ internal=internal.toFixed(2);
+ intResult.innerText="Internal: "+internal;
+ intMsg.classList.remove("hidden");
+ if(internal<23){
+  intMsg.style.background="var(--danger)";
+  intMsg.innerText=`Very low internal. Need ${(23-internal)+27} / 50 in end sem to pass.`;
+ }else if(internal>35){
+  intMsg.style.background="var(--green)";
+  intMsg.innerText="Excellent internal marks!";
+ }else{
+  intMsg.style.background="var(--orange)";
+  intMsg.innerText="Average internal.";
+ }
+}
 </script>
 
 </body>
