@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VEL TECH CALCULATOR</title>
+
+<style>
+:root{
+    --primary:#1e40af;
+    --bg:#f1f5f9;
+    --card:#ffffff;
+    --danger:#dc2626;
+    --warning:#f59e0b;
+    --success:#16a34a;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Segoe UI,system-ui,sans-serif;
+    background:var(--bg);
+    padding:30px;
+}
+h1{text-align:center;margin-bottom:20px}
+.card{
+    background:var(--card);
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+}
+.hidden{display:none}
+.menu{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+.menu button{
+    padding:10px 18px;
+    border:none;
+    border-radius:20px;
+    background:#e5e7eb;
+    font-weight:600;
+    cursor:pointer;
+}
+.menu button.active{
+    background:var(--primary);
+    color:#fff;
+}
+.section{
+    display:none;
+    max-width:950px;
+    margin:auto;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+th,td{
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+}
+th{background:#eff6ff}
+input,select{
+    padding:8px;
+    width:100%;
+    border-radius:6px;
+    border:1px solid #c7d2fe;
+}
+.btn{
+    margin-top:15px;
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    background:var(--primary);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+}
+.btn.secondary{background:#64748b}
+.btn.success{background:var(--success)}
+.result{
+    margin-top:15px;
+    padding:12px;
+    background:#f8fafc;
+    border-radius:8px;
+    font-weight:bold;
+}
+.warning{
+    margin-top:10px;
+    padding:10px;
+    border-radius:8px;
+    color:#fff;
+}
+.progress{
+    height:16px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:8px;
+}
+.progress div{height:100%}
+footer{
+    text-align:center;
+    margin-top:40px;
+    font-size:14px;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<h1>VEL TECH CALCULATOR</h1>
+
+<!-- STUDENT PROFILE -->
+<div id="profileCard" class="card">
+<h2>Student Profile</h2>
+<input id="sname" placeholder="Student Name"><br><br>
+<input id="regno" placeholder="Register Number"><br><br>
+<input id="dept" placeholder="Department"><br><br>
+<input id="sem" placeholder="Semester">
+<button class="btn" onclick="proceed()">Proceed to Calculators</button>
+<div id="profileError" class="warning hidden" style="background:var(--danger)">
+Please fill all profile details
+</div>
+</div>
+
+<!-- CALCULATOR AREA -->
+<div id="calculatorArea" class="hidden">
+
+<!-- GREETING -->
+<div class="card">
+<h2 id="helloText"></h2>
+<p style="color:#475569">Welcome to Vel Tech Calculator</p>
+</div>
+
+<!-- PROFILE SUMMARY -->
+<div class="card">
+<strong id="profileSummary"></strong><br>
+<button class="btn secondary" onclick="editProfile()">✏ Edit Profile</button>
+</div>
+
+<div class="menu">
+    <button onclick="showSection('gpa',this)">GPA</button>
+    <button onclick="showSection('cgpa',this)">CGPA</button>
+    <button onclick="showSection('attendance',this)">Attendance</button>
+    <button onclick="showSection('internal',this)">Internal</button>
+</div>
+
+<!-- GPA -->
+<div id="gpa" class="section card">
+<h2>GPA Calculator</h2>
+<table id="gpaTable">
+<tr><th>Course</th><th>Credits</th><th>Grade</th></tr>
+<tr>
+<td><input></td>
+<td><input type="number" class="credit"></td>
+<td>
+<select class="grade" onchange="checkRA(this)">
+<option value="">Select</option>
+<option value="10">S</option>
+<option value="9">A</option>
+<option value="8">B</option>
+<option value="7">C</option>
+<option value="6">D</option>
+<option value="0">RA</option>
+</select>
+</td>
+</tr>
+</table>
+<button class="btn" onclick="addGPARow()">+ Add Course</button>
+<button class="btn" onclick="calculateGPA()">Calculate GPA</button>
+<button class="btn success" onclick="addGPAtoCGPA()">Add this GPA to CGPA</button>
+<div id="raWarning" class="warning hidden" style="background:var(--danger)">
+⚠ RA detected. GPA includes failed courses.
+</div>
+<div class="result" id="gpaResult"></div>
+<button class="btn" onclick="download()">Download</button>
+</div>
+
+<!-- CGPA -->
+<div id="cgpa" class="section card">
+<h2>CGPA Calculator</h2>
+<table id="cgpaTable">
+<tr><th>Semester</th><th>Credits</th><th>GPA</th></tr>
+</table>
+<button class="btn" onclick="calculateCGPA()">Calculate CGPA</button>
+<div class="result" id="cgpaResult"></div>
+<button class="btn" onclick="download()">Download</button>
+</div>
+
+<!-- ATTENDANCE -->
+<div id="attendance" class="section card">
+<h2>Attendance Calculator</h2>
+<input id="totalClasses" type="number" placeholder="Total Classes"><br><br>
+<input id="attendedClasses" type="number" placeholder="Classes Attended">
+<button class="btn" onclick="calculateAttendance()">Calculate</button>
+<div class="result" id="attendanceResult"></div>
+<div id="attStatus" class="warning"></div>
+<div class="progress"><div id="attBar"></div></div>
+<div class="result" id="attPredict"></div>
+<button class="btn" onclick="download()">Download</button>
+</div>
+
+<!-- INTERNAL -->
+<div id="internal" class="section card">
+<h2>Internal Marks Calculator</h2>
+
+<select id="subjectType" onchange="toggleInternalType()">
+<option value="">Select Subject Type</option>
+<option value="theory">Theory</option>
+<option value="integrated">Integrated</option>
+</select>
+
+<div id="theoryBlock" class="hidden">
+<br>
+<input id="t1" placeholder="Test 1">
+<input id="t2" placeholder="Test 2">
+<input id="t3" placeholder="Test 3">
+<input id="tAttend" placeholder="Attendance (out of 5)">
+<input id="tAssign" placeholder="Assignment (out of 5)">
+</div>
+
+<div id="integratedBlock" class="hidden">
+<br>
+<input id="i1" placeholder="Test 1 (out of 20)">
+<input id="i2" placeholder="Test 2 (out of 20)">
+<input id="lab" placeholder="Lab Mark (out of 20)">
+<input id="iAttend" placeholder="Attendance (out of 5)">
+<input id="iAssign" placeholder="Assignment (out of 5)">
+</div>
+
+<button class="btn" onclick="calculateInternal()">Calculate Internal</button>
+<div class="result" id="internalResult"></div>
+<button class="btn" onclick="download()">Download</button>
+</div>
+
+</div>
+
+<footer>Created By Varshith G S</footer>
+
+<script>
+let lastGPA=null,lastCredits=null;
+
+function proceed(){
+    if(!sname.value||!regno.value||!dept.value||!sem.value){
+        profileError.classList.remove("hidden"); return;
+    }
+    profileCard.classList.add("hidden");
+    calculatorArea.classList.remove("hidden");
+    helloText.innerText="Hello, "+sname.value;
+    profileSummary.innerText=
+        `${sname.value} | ${regno.value} | ${dept.value} | Semester ${sem.value}`;
+}
+
+function editProfile(){
+    calculatorArea.classList.add("hidden");
+    profileCard.classList.remove("hidden");
+}
+
+function showSection(id,btn){
+    document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+    document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+    document.getElementById(id).style.display='block';
+    btn.classList.add('active');
+}
+
+function addGPARow(){
+    gpaTable.insertRow().innerHTML=`
+    <td><input></td>
+    <td><input type="number" class="credit"></td>
+    <td>
+    <select class="grade" onchange="checkRA(this)">
+        <option value="">Select</option>
+        <option value="10">S</option>
+        <option value="9">A</option>
+        <option value="8">B</option>
+        <option value="7">C</option>
+        <option value="6">D</option>
+        <option value="0">RA</option>
+    </select>
+    </td>`;
+}
+
+function checkRA(sel){
+    sel.parentElement.parentElement.style.background =
+        sel.value==="0" ? "#fee2e2" : "";
+}
+
+function calculateGPA(){
+    let tc=0,tp=0,ra=false;
+    document.querySelectorAll('.credit').forEach((c,i)=>{
+        let g=document.querySelectorAll('.grade')[i].value;
+        if(c.value&&g){
+            tc+=+c.value; tp+=c.value*g;
+            if(g==0) ra=true;
+        }
+    });
+    lastCredits=tc;
+    lastGPA=(tp/tc).toFixed(2);
+    gpaResult.innerText="GPA: "+lastGPA;
+    raWarning.classList.toggle("hidden",!ra);
+}
+
+function addGPAtoCGPA(){
+    if(!lastGPA) return;
+    cgpaTable.insertRow().innerHTML=
+        `<td>Sem ${cgpaTable.rows.length}</td>
+         <td>${lastCredits}</td>
+         <td>${lastGPA}</td>`;
+}
+
+function calculateCGPA(){
+    let tc=0,sum=0;
+    [...cgpaTable.rows].slice(1).forEach(r=>{
+        let c=+r.cells[1].innerText;
+        let g=+r.cells[2].innerText;
+        tc+=c; sum+=c*g;
+    });
+    cgpaResult.innerText="CGPA: "+(sum/tc).toFixed(2);
+}
+
+function calculateAttendance(){
+    let t=+totalClasses.value,a=+attendedClasses.value;
+    let p=(a/t)*100;
+    attendanceResult.innerText="Attendance: "+p.toFixed(2)+"%";
+    let status,color;
+    if(p>=80){status="SAFE";color="var(--success)"}
+    else if(p>=75){status="RISK";color="var(--warning)"}
+    else{status="CRITICAL";color="var(--danger)"}
+    attStatus.innerText=status;
+    attStatus.style.background=color;
+    attBar.style.width=p+"%";
+    attBar.style.background=color;
+    attPredict.innerText=
+        "If you miss 1 more class → "+((a)/(t+1)*100).toFixed(2)+"%";
+}
+
+function toggleInternalType(){
+    theoryBlock.classList.add("hidden");
+    integratedBlock.classList.add("hidden");
+    if(subjectType.value==="theory") theoryBlock.classList.remove("hidden");
+    if(subjectType.value==="integrated") integratedBlock.classList.remove("hidden");
+}
+
+function calculateInternal(){
+    let total=0;
+    if(subjectType.value==="theory"){
+        total=(+t1.value+ +t2.value+ +t3.value)/3
+              + +tAttend.value + +tAssign.value;
+    }
+    if(subjectType.value==="integrated"){
+        total=(+i1.value+ +i2.value)/2
+              + +lab.value + +iAttend.value + +iAssign.value;
+    }
+    internalResult.innerText="Internal Marks: "+total.toFixed(2);
+}
+
+function download(){ window.print(); }
+</script>
+
+</body>
+</html>
