@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <title>VEL TECH CALCULATOR</title>
 
+<!-- FONT PAIRING -->
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
+
+/* ===== ROOT COLORS ===== */
 :root{
     --bg:#f1f5f9;
     --blue:#2563eb;
@@ -14,14 +18,36 @@
     --gray:#64748b;
     --danger:#dc2626;
 }
+
+/* ===== BASE ===== */
 *{box-sizing:border-box}
+
 body{
     margin:0;
-    font-family:Segoe UI,system-ui,sans-serif;
-    background:var(--bg);
     padding:30px;
+    background:var(--bg);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    color:#0f172a;
 }
-h1{text-align:center;margin-bottom:20px}
+
+h1{
+    font-family:'Poppins',sans-serif;
+    font-size:32px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+h2{
+    font-family:'Poppins',sans-serif;
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+/* ===== CARDS ===== */
 .card{
     background:white;
     padding:20px;
@@ -29,7 +55,9 @@ h1{text-align:center;margin-bottom:20px}
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
     margin-bottom:20px;
     border-left:8px solid;
+    font-size:15px;
 }
+
 .profile{border-color:var(--gray)}
 .gpa{border-color:var(--blue)}
 .cgpa{border-color:var(--indigo)}
@@ -38,6 +66,7 @@ h1{text-align:center;margin-bottom:20px}
 
 .hidden{display:none}
 
+/* ===== MENU ===== */
 .menu{
     display:flex;
     justify-content:center;
@@ -45,31 +74,59 @@ h1{text-align:center;margin-bottom:20px}
     flex-wrap:wrap;
     margin-bottom:20px;
 }
+
 .menu button{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    font-weight:600;
     padding:10px 18px;
     border:none;
     border-radius:20px;
     background:#e5e7eb;
-    font-weight:600;
     cursor:pointer;
 }
+
 .menu button.active{
     background:var(--blue);
     color:white;
 }
-.section{display:none;max-width:950px;margin:auto}
 
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:10px;text-align:center;border-bottom:1px solid #ddd}
-th{background:#eff6ff}
+.section{
+    display:none;
+    max-width:950px;
+    margin:auto;
+}
 
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    font-size:14px;
+}
+
+th,td{
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+}
+
+th{
+    background:#eff6ff;
+    font-weight:600;
+}
+
+/* ===== INPUTS ===== */
 input,select{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
     padding:8px;
     width:100%;
     border-radius:6px;
     border:1px solid #c7d2fe;
 }
 
+/* ===== BUTTONS ===== */
 .btn{
     margin-top:15px;
     padding:10px 16px;
@@ -77,25 +134,32 @@ input,select{
     border-radius:8px;
     background:var(--blue);
     color:white;
+    font-size:14px;
     font-weight:600;
     cursor:pointer;
 }
+
 .btn.secondary{background:var(--gray)}
 
+/* ===== RESULTS ===== */
 .result{
     margin-top:15px;
     padding:12px;
     background:#f8fafc;
     border-radius:8px;
-    font-weight:bold;
+    font-weight:600;
 }
+
 .msg{
     margin-top:10px;
     padding:10px;
     border-radius:8px;
     color:white;
+    font-size:14px;
+    font-weight:500;
 }
 
+/* ===== ATTENDANCE BAR ===== */
 .progress{
     height:16px;
     background:#e5e7eb;
@@ -105,13 +169,20 @@ input,select{
 }
 .progress div{height:100%}
 
-footer{text-align:center;margin-top:40px;font-size:14px;color:#555}
+/* ===== FOOTER ===== */
+footer{
+    text-align:center;
+    margin-top:40px;
+    font-size:13px;
+    letter-spacing:0.3px;
+    color:#555;
+}
 </style>
 </head>
 
 <body>
 
-<h1>VEL TECH CALCULATOR</h1>
+<h1>VEL TECH ACADEMIC CALCULATOR</h1>
 
 <!-- PROFILE -->
 <div id="profileCard" class="card profile">
@@ -132,7 +203,7 @@ Fill all profile details
 <h2 id="helloText"></h2>
 <p>Welcome to Vel Tech Calculator</p>
 <strong id="profileSummary"></strong><br>
-<button class="btn success" onclick="editProfile()">Edit Profile</button>
+<button class="btn secondary" onclick="editProfile()">Edit Profile</button>
 </div>
 
 <div class="menu">
@@ -169,13 +240,13 @@ Fill all profile details
 <div id="gpaMsg" class="msg hidden"></div>
 </div>
 
-<!-- CGPA (MANUAL) -->
+<!-- CGPA -->
 <div id="cgpa" class="section card cgpa">
-<h2>CGPA Calculator </h2>
+<h2>CGPA Calculator (Manual)</h2>
 <table id="cgpaTable">
-<tr><th>Semester</th><th>Credits Earned</th><th>GPA Obtained</th></tr>
+<tr><th>Semester</th><th>Credits</th><th>GPA</th></tr>
 <tr>
-<td><input placeholder="Sem 1"></td>
+<td><input></td>
 <td><input type="number" class="semCredit"></td>
 <td><input type="number" step="0.01" class="semGPA"></td>
 </tr>
@@ -230,7 +301,7 @@ Fill all profile details
 
 </div>
 
-  <footer><b> Created By Varshith G S (VTU27888) || © All Rights Reserved</b></footer>
+  <footer><b>Created By Varshith G S (VTU 27888) || © All Rights Reserved</b></footer>
 
 <script>
 function proceed(){
@@ -276,20 +347,12 @@ function calcGPA(){
  let gpa=(tp/tc).toFixed(2);
  gpaResult.innerText="GPA: "+gpa;
  gpaMsg.classList.remove("hidden");
- if(gpa<6||ra>0){
-  gpaMsg.style.background="var(--danger)";
-  gpaMsg.innerText="Poor GPA / RA detected.";
- }else if(gpa<7.5){
-  gpaMsg.style.background="var(--orange)";
-  gpaMsg.innerText="Average GPA.";
- }else{
-  gpaMsg.style.background="var(--green)";
-  gpaMsg.innerText="Good GPA.";
- }
+ gpaMsg.style.background=gpa<6||ra>0?"var(--danger)":gpa<7.5?"var(--orange)":"var(--green)";
+ gpaMsg.innerText=gpa<6||ra>0?"Poor GPA / RA detected":gpa<7.5?"Average GPA":"Good GPA";
 }
 function addCGPARow(){
  cgpaTable.insertRow().innerHTML=`
- <td><input placeholder="Sem"></td>
+ <td><input></td>
  <td><input type="number" class="semCredit"></td>
  <td><input type="number" step="0.01" class="semGPA"></td>`;
 }
@@ -302,16 +365,8 @@ function calcCGPA(){
  let cgpa=(sum/tc).toFixed(2);
  cgpaResult.innerText="CGPA: "+cgpa;
  cgpaMsg.classList.remove("hidden");
- if(cgpa<6){
-  cgpaMsg.style.background="var(--danger)";
-  cgpaMsg.innerText="At risk. Not placement eligible.";
- }else if(cgpa<7){
-  cgpaMsg.style.background="var(--orange)";
-  cgpaMsg.innerText="Weak standing.";
- }else{
-  cgpaMsg.style.background="var(--green)";
-  cgpaMsg.innerText="Good standing.";
- }
+ cgpaMsg.style.background=cgpa<6?"var(--danger)":cgpa<7?"var(--orange)":"var(--green)";
+ cgpaMsg.innerText=cgpa<6?"At Risk":cgpa<7?"Weak Standing":"Good Standing";
 }
 function calcAttendance(){
  let t=+total.value,a=+attended.value;
@@ -320,17 +375,11 @@ function calcAttendance(){
  let color=p>=80?"var(--green)":p>=75?"var(--orange)":"var(--danger)";
  attBar.style.width=p+"%";attBar.style.background=color;
  attMsg.classList.remove("hidden");
- if(p<75){
-  attMsg.style.background="var(--danger)";
-  attMsg.innerText="Below 75%. Exam debar risk.";
- }else{
-  attMsg.style.background="var(--green)";
-  attMsg.innerText="Attendance acceptable.";
- }
- attRecover.innerText=
-  `Classes needed → 75%: ${Math.ceil((0.75*t-a)/(1-0.75))},
-   80%: ${Math.ceil((0.8*t-a)/(1-0.8))},
-   90%: ${Math.ceil((0.9*t-a)/(1-0.9))}`;
+ attMsg.style.background=p<75?"var(--danger)":"var(--green)";
+ attMsg.innerText=p<75?"Below 75% – Exam Debar Risk":"Attendance Acceptable";
+ attRecover.innerText=`Classes needed → 75%: ${Math.ceil((0.75*t-a)/(1-0.75))},
+ 80%: ${Math.ceil((0.8*t-a)/(1-0.8))},
+ 90%: ${Math.ceil((0.9*t-a)/(1-0.9))}`;
 }
 function toggleInternal(){
  theory.classList.add("hidden");
@@ -349,16 +398,10 @@ function calcInternal(){
  internal=internal.toFixed(2);
  intResult.innerText="Internal: "+internal;
  intMsg.classList.remove("hidden");
- if(internal<23){
-  intMsg.style.background="var(--danger)";
-  intMsg.innerText=`Very low internal. Need ${(23-internal)+27} / 50 in end sem to pass.`;
- }else if(internal>35){
-  intMsg.style.background="var(--green)";
-  intMsg.innerText="Excellent internal marks!";
- }else{
-  intMsg.style.background="var(--orange)";
-  intMsg.innerText="Average internal.";
- }
+ intMsg.style.background=internal<23?"var(--danger)":internal>35?"var(--green)":"var(--orange)";
+ intMsg.innerText=internal<23?
+ `Very low internal. Need ${(23-internal)+27} / 50 in end sem`:
+ internal>35?"Excellent internal marks":"Average internal";
 }
 </script>
 
